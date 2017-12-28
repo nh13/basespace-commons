@@ -27,6 +27,18 @@ class Environment(object):
         assert end == 1 or end == 2
         return f"R{end}_001.fastq.gz"
 
+    def sample_names_and_ids(self):
+        """ Gets a the name and id foreach sample. """
+        return list(zip(self.__sample_names, self.__sample_ids))
+
+    def output_project_id(self):
+        """ The output project identifier. """
+        return self.__output_project_id
+
+    def output_project_name(self):
+        """ The output project name. """
+        return self.__output_project_name
+
     def app_result_name(self):
         """ The name for the app result. """
         return self.__app_result_name
@@ -34,6 +46,22 @@ class Environment(object):
     def root_dir(self):
         """ The root directory for all analyses. """
         return self.__root_dir
+    
+    def output_project_dir(self):
+        """ The path to the output project directory containing all the sample directories. """
+        return os.path.join(self.root_dir(), "output", "appresults", self.output_project_id(), self.app_result_name()) 
+
+    def output_sample_dir(self, sample_name):
+        """ The path to the output directory for the given sample. """
+        return os.path.join(self.output_project_dir(), sample_name)
+    
+    def tmp_dir(self):
+        """ The temporary directory to use for all analyses. """
+        return os.path.join(self.root_dir(), "scratch")    
+
+    def num_samples(self):
+        """ Gets the number of samples. """
+        return len(self.__sample_names)
     
     def input_sample_dir(self, sample_idx, try_alternate=True):
         """ Gets the path to the sample input directory containing the sample's FASTQ(s). """
@@ -71,34 +99,6 @@ class Environment(object):
             raise Exception(f"Mismatching # of fastqs for R1 ({len(fastqs_r1)}) and R2 ({len(fastqs_r2)})")
         else:
             return (fastqs_r1, fastqs_r2)
-
-    def output_project_id(self):
-        """ The output project identifier. """
-        return self.__output_project_id
-
-    def output_project_name(self):
-        """ The output project name. """
-        return self.__output_project_name
-    
-    def output_project_dir(self):
-        """ The path to the output project directory containing all the sample directories. """
-        return os.path.join(self.root_dir(), "output", "appresults", self.output_project_id(), self.app_result_name()) 
-
-    def output_sample_dir(self, sample_name):
-        """ The path to the output directory for the given sample. """
-        return os.path.join(self.output_project_dir(), sample_name)
-    
-    def tmp_dir(self):
-        """ The temporary directory to use for all analyses. """
-        return os.path.join(root_dir, "scratch")    
-
-    def num_samples(self):
-        """ Gets the number of samples. """
-        return len(self.__sample_names)
-
-    def sample_names_and_ids(self):
-        """ Gets a the name and id foreach sample. """
-        return zip(self.__sample_names, self.__sample_ids)
 
     @staticmethod
     def from_json(app_session_json):
