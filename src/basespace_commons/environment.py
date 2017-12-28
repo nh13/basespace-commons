@@ -91,6 +91,14 @@ class Environment(object):
         """ The temporary directory to use for all analyses. """
         return os.path.join(root_dir, "scratch")    
 
+    def num_samples(self):
+        """ Gets the number of samples. """
+        return len(self.__sample_names)
+
+    def sample_names_and_ids(self):
+        """ Gets a the name and id foreach sample. """
+        return zip(self.__sample_names, self.__sample_ids)
+
     @staticmethod
     def from_json(app_session_json):
         """
