@@ -5,8 +5,8 @@ try:
 except ImportError:
     from distutils.core import setup
 
-if sys.version_info < (3,3):
-	    sys.exit('Sorry, Python < 3.3 is not supported!')
+if sys.version_info < (3,6):
+	    sys.exit('Sorry, Python < 3.6 is not supported!')
 
 setup(
     name = "basespace-commons",
