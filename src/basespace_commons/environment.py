@@ -144,6 +144,5 @@ class Environment(object):
                 sample_names        = sample_names,
                 output_project_id   = app_option_dict["Input.project-id"]["Id"],
                 output_project_name = app_option_dict["Input.project-id"]["Name"],
-                app_result_name     = json_data["Name"],
-                root_dir            = root_dir
+                app_result_name     = json_data["Name"]
                 )
