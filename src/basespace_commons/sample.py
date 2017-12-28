@@ -4,7 +4,7 @@ import os
 import sys
 import csv
 from collections import OrderedDict
-from basespace_commons import Environment
+from basespace_commons.environment import Environment
 
 class Sample:
     """ Stores information about a sample. """
@@ -61,7 +61,7 @@ class Sample:
             return f"{sample_name}_S{self.__sample_ordinal:d}_L001"
         else:
             sample_barcode_column = sample_barcode_column.lower()
-            sample_id			  = self.__dict['sample_id']
+            sample_id              = self.__dict['sample_id']
             sample_barcode_bases  = self.__dict[sample_barcode_column]
             return f"{sample_id}-{sample_name}-{sample_barcode_bases}"
 
@@ -105,7 +105,7 @@ class Sample:
         for sample_index, line in enumerate(line_iter):
             sample_data = line.split(",")
             sample_dict = dict(zip(header, sample_data))
-            sample	    = Sample(sample_dict, sample_ordinal=sample_index+1)
+            sample      = Sample(sample_dict, sample_ordinal=sample_index+1)
             samples.append(sample)
         return samples
 

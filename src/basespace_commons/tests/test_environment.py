@@ -1,6 +1,6 @@
 import unittest
 
-from basespace_commons import sample
+from basespace_commons import environment
 
 class TestEnvironment(unittest.TestCase):
     # Tests to write
@@ -36,3 +36,5 @@ class TestEnvironment(unittest.TestCase):
     # from() handle input samples Input.sample-id
     # from() handle input samples Input.Samples
     # from() exception with missing input samples 
+    
+    pass
