@@ -15,9 +15,9 @@ class Sample:
         """
         self.__dict = sample_dict
         self.__sample_ordinal = sample_ordinal
-        assert sample_dict['sample_name']
-        assert sample_dict['sample_id']
-        assert 0 < self.__sample_ordinal
+        assert sample_dict['sample_name'], "'sample_name' not in the sample dictionary"
+        assert sample_dict['sample_id'], "'sample_id' not in the sample dictionary"
+        assert 0 < self.__sample_ordinal, f"sample_ordinal must be greater than zero, was {sample_ordinal}"
 
     def bam(self, dir, ext="bam", unmatched=False, illumina_naming=False, sample_barcode_column=None):
         """
@@ -37,7 +37,7 @@ class Sample:
         The file extension will be "_R1_001.fastq.gz" when end is 1, or "_R2_001.fastq.gz"
         when end is 2.
         """
-        assert 1 == end or 2 == end 
+        assert 1 == end or 2 == end, f"end must be 1 or 2, was {end}"
         ext = Environment.fq_ext(end=end)
         prefix = self.prefix(unmatched=unmatched, illumina_naming=illumina_naming, sample_barcode_column=sample_barcode_column)
         return os.path.join(dir, f"{prefix}_{ext}")
@@ -58,7 +58,7 @@ class Sample:
         if illumina_naming:
             return f"{sample_name}_S{self.__sample_ordinal:d}_L001"
         else:
-            assert sample_barcode_column
+            assert sample_barcode_column, "sample_barcode_column must be provided when illumina_naming is False"
             sample_barcode_column = sample_barcode_column.lower()
             sample_id             = self.__dict['sample_id']
             sample_barcode_bases  = self.__dict[sample_barcode_column]
