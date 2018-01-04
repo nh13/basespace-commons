@@ -6,20 +6,37 @@
 import os
 import sys
 import json
+from collections import MutableMapping, OrderedDict
 
 
-class Environment(object):
+class Environment(MutableMapping):
     """ Contains information for the given BaseSpace Environment. """
     
-    def __init__(self, sample_ids, sample_names, output_project_id, output_project_name, app_result_name, root_dir="/data"): 
+    def __init__(self, app_option_dict, sample_ids, sample_names, output_project_id, output_project_name, app_result_name, root_dir="/data"): 
         """ Creates a a new environment. """
         assert len(sample_ids) == len(sample_names)
+        self.__app_option_dict = app_option_dict
         self.__sample_ids = sample_ids
         self.__sample_names = sample_names
         self.__output_project_id = output_project_id
         self.__output_project_name = output_project_name
         self.__app_result_name = app_result_name
         self.__root_dir = root_dir
+
+    def __getitem__(self, key):
+        return self.__app_option_dict[key]
+
+    def __setitem__(self, key, value):
+        self.__app_option_dict[key] = value
+
+    def __delitem__(self, key):
+        del self.__app_option_dict[key]
+
+    def __iter__(self):
+        return iter(self.__app_option_dict.keys())
+
+    def __len__(self):
+        return len(self.__app_option_dict)
   
     @staticmethod
     def fq_ext(end=1):
@@ -109,11 +126,11 @@ class Environment(object):
 
         # Read in the AppSession.json
         fh = open(app_session_json, "r")
-        json_data = json.loads("".join(fh.readlines()))
+        json_data = json.loads("".join(fh.readlines()), object_pairs_hook=OrderedDict)
         fh.close()
 
         # Get the sub-set of the JSON that contains the App options given by the user
-        app_option_dict = {}
+        app_option_dict = OrderedDict()
         for app_option in json_data["Properties"]["Items"]:
             name = app_option["Name"]
             if "Content" in app_option:
@@ -140,6 +157,7 @@ class Environment(object):
             raise Exception("Could not find either Input.BioSamples or Input.sample-id key: " + ", ".join(app_option_dict.keys()))
 
         return Environment(
+                app_option_dict     = app_option_dict,
                 sample_ids          = sample_ids,
                 sample_names        = sample_names,
                 output_project_id   = app_option_dict["Input.project-id"]["Id"],
