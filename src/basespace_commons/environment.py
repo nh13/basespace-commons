@@ -109,13 +109,13 @@ class Environment(MutableMapping):
         # NB: basespace has a problem with underscores in basespace, as they are replaced with dashes 
         sample_name = self.__sample_names[sample_idx].replace("_", "-")
         
-        def get_fastqs(which):
-            suffix = self.fq_ext(which=which)
+        def get_fastqs(end):
+            suffix = self.fq_ext(end=end)
             fastqs = [os.path.join(sample_dir, f) for f in os.listdir(sample_dir) if f.endswith(suffix) and f.startswith(sample_name)]
             return [f for f in fastqs if os.path.exists(f) and os.path.isfile(f)] 
 
-        fastqs_r1 = get_fastqs(which=1)
-        fastqs_r2 = get_fastqs(which=2)
+        fastqs_r1 = get_fastqs(end=1)
+        fastqs_r2 = get_fastqs(end=2)
 
         if len(fastqs_r1) == 0:
             raise Exception(f"No FASTQs found for R1 for sample '{sample_name}' in '{sample_dir}'.  Found:\n\t" + "\n\t".join([f for f in os.listdir(sample_dir) if os.path.isfile(f)]))
