@@ -9,10 +9,17 @@ import json
 from collections import MutableMapping, OrderedDict
 
 
+class EnvironmentDefaults(object):
+    
+    DefaultRootDir = "/data"
+
+
+
 class Environment(MutableMapping):
     """ Contains information for the given BaseSpace Environment. """
+
     
-    def __init__(self, app_option_dict, sample_ids, sample_names, output_project_id, output_project_name, app_result_name, root_dir="/data"): 
+    def __init__(self, app_option_dict, sample_ids, sample_names, output_project_id, output_project_name, app_result_name, root_dir=EnvironmentDefaults.DefaultRootDir):
         """ Creates a a new environment. """
         assert len(sample_ids) == len(sample_names)
         self.__app_option_dict = app_option_dict
@@ -118,7 +125,7 @@ class Environment(MutableMapping):
             return (fastqs_r1, fastqs_r2)
 
     @staticmethod
-    def from_json(app_session_json):
+    def from_json(app_session_json, root_dir=EnvironmentDefaults.DefaultRootDir):
         """
         Will read in the AppSession.json, parse out the input user App options (Properties -> Items),
         and configure the BaseSpace drive structure (i.e. environment).
@@ -162,5 +169,6 @@ class Environment(MutableMapping):
                 sample_names        = sample_names,
                 output_project_id   = app_option_dict["Input.project-id"]["Id"],
                 output_project_name = app_option_dict["Input.project-id"]["Name"],
-                app_result_name     = json_data["Name"]
+                app_result_name     = json_data["Name"],
+                root_dir            = root_dir
                 )
