@@ -4,6 +4,7 @@ from basespace_commons.environment import Environment
 
 class TestEnvironment(unittest.TestCase):
     Default = Environment(
+            app_option_dict = {},
             sample_ids = ['id1', 'id2'],
             sample_names = ['name1', 'name2'],
             output_project_id = 'output_project_id',
@@ -15,6 +16,7 @@ class TestEnvironment(unittest.TestCase):
     def test_init_ids_and_names_diff_length(self):
         with self.assertRaises(AssertionError):
             Environment(
+                    app_option_dict = {},
                     sample_ids = ['id1', 'id2'],
                     sample_names = ['name1', 'name2', 'name3'],
                     output_project_id = 'output_project_id',
@@ -57,3 +59,5 @@ class TestEnvironment(unittest.TestCase):
     # from() handle input samples Input.sample-id
     # from() handle input samples Input.Samples
     # from() exception with missing input samples 
+
+    # tests for add/set/get from the environment
