@@ -9,17 +9,21 @@ from basespace_commons.environment import Environment
 class Sample:
     """ Stores information about a sample. """
 
-    def __init__(self, sample_dict, sample_ordinal):
+    def __init__(self, sample_dict, sample_ordinal, illumina_naming=False, sample_barcode_column=None):
         """ Creates a new sample with metadata in key-value pairs, and a given sample ordinal. Both
-            the 'sample_name' and 'sample_id' keys should be defined.
+            the 'sample_name' and 'sample_id' keys should be defined.  If either illumina_naming or
+            sample_barcode_column are provided, then they will be used as defaults in bam(), fq() and
+            prefix() when the same named parameters are not given.
         """
         self.__dict = sample_dict
         self.__sample_ordinal = sample_ordinal
+        self.__illumina_naming = illumina_naming
+        self.__sample_barcode_column = sample_barcode_column
         assert sample_dict['sample_name'], "'sample_name' not in the sample dictionary"
         assert sample_dict['sample_id'], "'sample_id' not in the sample dictionary"
         assert 0 < self.__sample_ordinal, f"sample_ordinal must be greater than zero, was {sample_ordinal}"
 
-    def bam(self, dir, ext="bam", unmatched=False, illumina_naming=False, sample_barcode_column=None):
+    def bam(self, dir, ext="bam", unmatched=False, illumina_naming=None, sample_barcode_column=None):
         """
         Returns the output BAM file name produced by fgbio's DemuxFastqs. 
 
@@ -28,7 +32,7 @@ class Sample:
         prefix = self.prefix(unmatched=unmatched, illumina_naming=illumina_naming, sample_barcode_column=sample_barcode_column)
         return os.path.join(dir, f"{prefix}.{ext}")
 
-    def fq(self, dir, end, unmatched=None,illumina_naming=False, sample_barcode_column=None):
+    def fq(self, dir, end, unmatched=None, illumina_naming=None, sample_barcode_column=None):
         """
         Returns the output FASTQ file name produced by fgbio's DemuxFastqs. 
         
@@ -54,6 +58,11 @@ class Sample:
         If unmatched is True, the sample name used will be "unmatched".
         """
         sample_name = "unmatched" if unmatched else self.__dict['sample_name']
+
+        if illumina_naming is None:
+            illumina_naming = self.__illumina_naming
+        if sample_barcode_column is None:
+            sample_barcode_column = self.__sample_barcode_column
 
         if illumina_naming:
             return f"{sample_name}_S{self.__sample_ordinal:d}_L001"
@@ -88,7 +97,7 @@ class Sample:
         return self.__dict[key]
 
     @staticmethod
-    def samples_from(data, logging=True):
+    def samples_from(data, illumina_naming=False, sample_barcode_column=None, logging=True):
         """
         Reads an Illumina Experiment Manager Sample Sheet or metadata input file and returns
         a list of samples.
@@ -115,7 +124,7 @@ class Sample:
                 break
             sample_data = line.split(",")
             sample_dict = dict(zip(header, sample_data))
-            sample      = Sample(sample_dict, sample_ordinal=sample_index+1)
+            sample      = Sample(sample_dict, sample_ordinal=sample_index+1, illumina_naming=illumina_naming, sample_barcode_column=sample_barcode_column)
             samples.append(sample)
         return samples
 
