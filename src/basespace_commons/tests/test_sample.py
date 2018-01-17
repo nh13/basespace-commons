@@ -125,4 +125,11 @@ Sample_ID,Sample_Name,Sample_Plate,Sample_Well,Sample_Barcode,R2_Barcode_Bases,I
         self.assertListEqual([s.sample_id() for s in samples], ["1", "2", "3", "4", "5"])
         self.assertListEqual([s.sample_name() for s in samples], ["N1", "N2", "N3", "N4", "N5"])
         self.assertListEqual([s.get('sample_barcode') for s in samples], ["A"*8, "C"*8, "G"*8, "T"*8, "N"*8])
+        self.assertEqual(samples[0].bam(dir="output", sample_barcode_column='sample_barcode'), "output/1-N1-AAAAAAAA.bam")
+
+        samples = Sample.samples_from(data=sample_sheet, illumina_naming=True, sample_barcode_column="sample_barcode", logging=False)
+        self.assertListEqual([s.sample_id() for s in samples], ["1", "2", "3", "4", "5"])
+        self.assertListEqual([s.sample_name() for s in samples], ["N1", "N2", "N3", "N4", "N5"])
+        self.assertListEqual([s.get('sample_barcode') for s in samples], ["A"*8, "C"*8, "G"*8, "T"*8, "N"*8])
+        self.assertEqual(samples[0].bam(dir="output"), "output/N1_S1_L001.bam")
 
