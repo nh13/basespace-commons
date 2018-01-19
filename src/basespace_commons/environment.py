@@ -47,9 +47,9 @@ class Environment(MutableMapping):
   
     @staticmethod
     def fq_ext(end=1):
-        """ The file extension for the read one FASTQ. """
+        """ The file extension for the read <end> FASTQ. """
         assert end == 1 or end == 2
-        return f"R{end}_001.fastq.gz"
+        return f"_R{end}_001.fastq.gz"
 
     def sample_names_and_ids(self):
         """ Gets a the name and id foreach sample. """

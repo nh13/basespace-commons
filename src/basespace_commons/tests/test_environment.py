@@ -38,8 +38,8 @@ class TestEnvironment(unittest.TestCase):
         self.assertEqual(env.num_samples(), 2)
 
     def test_fq_ext(self):
-        self.assertEqual(Environment.fq_ext(end=1), "R1_001.fastq.gz")
-        self.assertEqual(Environment.fq_ext(end=2), "R2_001.fastq.gz")
+        self.assertEqual(Environment.fq_ext(end=1), "_R1_001.fastq.gz")
+        self.assertEqual(Environment.fq_ext(end=2), "_R2_001.fastq.gz")
         with self.assertRaises(AssertionError):
             Environment.fq_ext(end=0)
         with self.assertRaises(AssertionError):

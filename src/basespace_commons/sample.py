@@ -44,7 +44,7 @@ class Sample:
         assert 1 == end or 2 == end, f"end must be 1 or 2, was {end}"
         ext = Environment.fq_ext(end=end)
         prefix = self.prefix(unmatched=unmatched, illumina_naming=illumina_naming, sample_barcode_column=sample_barcode_column)
-        return os.path.join(dir, f"{prefix}_{ext}")
+        return os.path.join(dir, f"{prefix}{ext}")
 
     def prefix(self, unmatched=False, illumina_naming=False, sample_barcode_column=None):
         """
