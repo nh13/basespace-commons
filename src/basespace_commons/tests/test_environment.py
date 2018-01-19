@@ -10,7 +10,7 @@ class TestEnvironment(unittest.TestCase):
     def build_default():
         root_dir = tempfile.mkdtemp(suffix='root_dir', prefix='tmp')
         env = Environment(
-                app_option_dict = {},
+                app_option_dict = {'some-key' : 'some-value'},
                 sample_ids = ['id1', 'id2'],
                 sample_names = ['name1', 'name2'],
                 output_project_id = 'output_project_id',
@@ -116,12 +116,25 @@ class TestEnvironment(unittest.TestCase):
     # from() handle input samples Input.Samples
     # from() exception with missing input samples 
     def test_from_json(self):
+
         pass
 
     # tests for set/get/del from the environment
     def test_get(self):
-        pass
+        env, root_dir = TestEnvironment.build_default()
+        self.assertEqual(env['some-key'], 'some-value')
+        with self.assertRaises(KeyError):
+            env['does-not-exist']
+
     def test_set(self):
-        pass
+        env, root_dir = TestEnvironment.build_default()
+        with self.assertRaises(KeyError):
+            env['does-not-exist']
+        env['does-not-exist'] = 'it-does-now'
+        self.assertEqual(env['does-not-exist'], 'it-does-now')
+
     def test_del(self):
-        pass
+        env, root_dir = TestEnvironment.build_default()
+        self.assertEqual(env['some-key'], 'some-value')
+        env['some-key'] = 'new-value'
+        self.assertEqual(env['some-key'], 'new-value')
