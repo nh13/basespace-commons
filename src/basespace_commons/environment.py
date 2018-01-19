@@ -91,14 +91,16 @@ class Environment(MutableMapping):
         """ Gets the path to the sample input directory containing the sample's FASTQ(s). """
         if len(self.__sample_ids) <= sample_idx or sample_idx < 0:
             raise Exception(f"Sample index '{sample_idx}' out of range (found {len(self.__sample_ids)} samples).")
+        paths_tried = []
         path = os.path.join(self.root_dir(), "input", "samples", self.__sample_ids[sample_idx], "Data", "Intensities", "BaseCalls")
+        paths_tried.append(path)
         if (not os.path.exists(path) or not os.path.isdir(path)) and try_alternate:
-            alt_path = os.path.join(self.root_dir(), "input", "samples", self.__sample_ids[sample_idx])
-            if os.path.exists(alt_path) and os.path.isdir(alt_path):
-                return alt_path
-            else:
-                raise Exception(f"Could not sample input directory for sample idx '{sample_idx}', tried paths:\n\t{path}\n\t{alt_path}\n")
-        return path
+            path = os.path.join(self.root_dir(), "input", "samples", self.__sample_ids[sample_idx])
+            paths_tried.append(path)
+        if not os.path.isdir(path):
+            raise Exception(f"Could not sample input directory for sample idx '{sample_idx}', tried paths:\n" + "\n".join(["\t" + p for p in paths_tried]))
+        else:
+            return path
 
     def input_sample_fastqs(self, sample_idx):
         """
