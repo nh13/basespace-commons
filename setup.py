@@ -12,7 +12,7 @@ setup(
     name = "basespace-commons",
     author = "Nils Homer",
     author_email = "nilshomer@gmail.com",
-    version = "0.0.1",
+    version = "0.1.0",
     description = "a library for use in basespace apps",
     long_description = "a library for use in basespace apps",
     url = "https://github.com/nh13/basespace-commons",
