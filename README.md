@@ -1,4 +1,4 @@
-# Conda Recipe for base-spacecommons
+# Conda Recipe for basespace-commons
 
 ## Pre-requisites
 
