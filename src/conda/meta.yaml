@@ -1,0 +1,24 @@
+{% set version="0.0.1a" %}
+{% set tag="37dbbf1" %}
+about:
+    home: https://github.com/nh13/basespace-commons
+    license: MIT
+    summary: Library for use in BaseSpace apps.
+package:
+    name: basespace-commons
+    version: {{ version }}
+build:
+  number: 0
+  skip: false
+source:
+  fn: {{ tag }}.tar.gz
+  url: https://github.com/nh13/basespace-commons/archive/{{ tag }}.tar.gz
+  sha256: 345be8792af65d27b19defd16da613761d6c0af554389cf513d69cdacabcdb72
+requirements:
+  build:
+    - python
+  run:
+    - python
+test:
+    imports:
+        - basespace_commons
