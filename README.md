@@ -18,3 +18,7 @@ To install locally: `python setup.py install`.
 To run tests, run `coverage run -m unittest discover -s src`
 
 To obtain test coverage, run `codecov`.
+
+# Conda Recipe
+
+See the [conda-recipe](https://github.com/nh13/basespace-commons/tree/conda-recipe) branch.
