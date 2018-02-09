@@ -155,18 +155,18 @@ class Environment(MutableMapping):
                 app_option_dict[name] = value
 
         # Get the input samples
-        if 'Input.BioSamples' in app_option_dict:
-            samples      = app_option_dict['Input.BioSamples']
+        if 'Input.Samples' in app_option_dict:
+            samples      = app_option_dict['Input.Samples']
             sample_ids   = [sample['Id'] for sample in samples]
-            sample_names = [sample['UserSampleId'] for sample in samples]
+            sample_names = [sample['Name'] for sample in samples]
         elif 'Input.sample-id' in app_option_dict:
             sample       = app_option_dict['Input.sample-id']
             sample_ids   = [sample['Id']]
             sample_names = [sample['Name']]
-        elif 'Input.Samples' in app_option_dict:
-            samples      = app_option_dict['Input.Samples']
+        elif 'Input.BioSamples' in app_option_dict:
+            samples      = app_option_dict['Input.BioSamples']
             sample_ids   = [sample['Id'] for sample in samples]
-            sample_names = [sample['Name'] for sample in samples]
+            sample_names = [sample['UserSampleId'] for sample in samples]
         else:
             raise Exception('Could not find either Input.BioSamples or Input.sample-id key: ' + ', '.join(app_option_dict.keys()))
 
