@@ -11,3 +11,6 @@ script:
   - coverage run -m unittest discover -s src
 after_success:
   - codecov
+branches:
+  except:
+    conda-recipe
